@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ninosoft.example.todolist.Controller">
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="Add New Item..." onAction="#showAddNewItemDialog"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem text="Exit"/>
+                </Menu>
+            </MenuBar>
+
+            <ToolBar>
+                <HBox>
+                    <Button onAction="#showAddNewItemDialog">
+                        <tooltip>
+                            <Tooltip text="Add New Item"/>
+                        </tooltip>
+
+                        <graphic>
+                            <ImageView>
+                                <Image url="@New24.gif"/>
+                                <!--<Image url="@/toolbarButtonGraphics/general/New24.gif"/>-->
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </ToolBar>
+        </VBox>
+    </top>
+    <left>
+        <!--<ListView fx:id="mTodoListView" onMouseClicked="#handleClickListView" BorderPane.alignment="TOP_LEFT" />-->
+        <ListView fx:id="mTodoListView" BorderPane.alignment="TOP_LEFT" onKeyPressed="#handleKeyPressed"/>
+    </left>
+    <center>
+        <VBox>
+            <TextArea fx:id="mDetailTextArea" VBox.vgrow="ALWAYS" wrapText="true"/>
+            <HBox>
+                <padding>
+                    <Insets bottom="10" left="10" top="10"/>
+                </padding>
+                <Label text="Due Date: ">
+                    <font>
+                        <Font name="Times New Roman bold" size="20"/>
+                    </font>
+                </Label>
+                <Label fx:id="mDueDateLabel">
+                    <font>
+                        <Font name="Times New Roman bold" size="20"/>
+                    </font>
+                </Label>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
