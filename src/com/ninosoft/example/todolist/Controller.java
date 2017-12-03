@@ -4,6 +4,8 @@ import com.ninosoft.example.todolist.datamodel.TodoData;
 import com.ninosoft.example.todolist.datamodel.TodoItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class Controller {
@@ -35,9 +38,21 @@ public class Controller {
 
 
     public void initialize() {
+        //Get the unsorted data array and saved in an ObservableList (JavaFX)
+        //A list that allows listeners to track changes when they occur.
+        ObservableList<TodoItem> sourceList = TodoData.getInstance().getTodoItemsList();
+
+        // Sort the unsorted data list.
+        // From JavaFX.Collections, SortedList class. There is no SortedList in Java.
+        SortedList<TodoItem> sortedList = new SortedList<>(sourceList, new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem o1, TodoItem o2) {
+                return o1.getDeadline().compareTo(o2.getDeadline());
+            }
+        });
 
         // Add the data to the listView Control
-        mTodoListView.setItems(TodoData.getInstance().getTodoItemsList());
+        mTodoListView.setItems(sortedList);
 
         /*
          * Add cellFactory to the ListView to be able to change the colors of the due date.

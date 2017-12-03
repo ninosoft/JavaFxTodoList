@@ -21,6 +21,7 @@ public class TodoData {
     private static String filename = "TodoListItems.txt";
 
     //ObservableList for the todoItem objects. Used for data binding.
+    //A list that allows listeners to track changes when they occur.
     private ObservableList<TodoItem> todoItemsList;
     //Formatter for printing and parsing date-time objects.
     private DateTimeFormatter formatter;
