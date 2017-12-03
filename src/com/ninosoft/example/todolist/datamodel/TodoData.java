@@ -1,4 +1,4 @@
-package datamodel;
+package com.ninosoft.example.todolist.datamodel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

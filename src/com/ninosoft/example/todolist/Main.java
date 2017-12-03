@@ -1,7 +1,7 @@
 package com.ninosoft.example.todolist;
 
 
-import datamodel.TodoData;
+import com.ninosoft.example.todolist.datamodel.TodoData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

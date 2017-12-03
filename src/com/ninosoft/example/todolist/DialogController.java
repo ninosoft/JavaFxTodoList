@@ -1,7 +1,7 @@
 package com.ninosoft.example.todolist;
 
-import datamodel.TodoData;
-import datamodel.TodoItem;
+import com.ninosoft.example.todolist.datamodel.TodoData;
+import com.ninosoft.example.todolist.datamodel.TodoItem;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;

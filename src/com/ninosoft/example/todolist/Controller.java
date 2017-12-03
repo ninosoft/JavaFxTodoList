@@ -1,7 +1,7 @@
 package com.ninosoft.example.todolist;
 
-import datamodel.TodoData;
-import datamodel.TodoItem;
+import com.ninosoft.example.todolist.datamodel.TodoData;
+import com.ninosoft.example.todolist.datamodel.TodoItem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
