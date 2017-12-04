@@ -19,7 +19,7 @@
             </MenuBar>
 
             <ToolBar>
-                <HBox>
+                <HBox spacing="10">
                     <Button onAction="#showAddNewItemDialog">
                         <tooltip>
                             <Tooltip text="Add New Item"/>
@@ -32,6 +32,11 @@
                             </ImageView>
                         </graphic>
                     </Button>
+                    <ToggleButton fx:id="filterToggleButton" text="Today's Items" onAction="#handleFilterToggle">
+                        <tooltip>
+                            <Tooltip text="Button Down: Show today's items only."/>
+                        </tooltip>
+                    </ToggleButton>
                 </HBox>
             </ToolBar>
         </VBox>

@@ -6,12 +6,14 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Controller {
 
@@ -36,16 +39,33 @@ public class Controller {
     private BorderPane mainBorderPane;
     @FXML
     private ContextMenu listContextMenu; //for right click menu
+    @FXML
+    private ToggleButton filterToggleButton;
+    private FilteredList<TodoItem> filteredList;
 
 
     public void initialize() {
-        //Get the unsorted data array and saved in an  object implementing the ObservableList interface (JavaFX)
-        //A list that allows listeners to track changes when they occur.
+        filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
+
+        // Get the unsorted data array and saved in an  object implementing the ObservableList interface (JavaFX)
+        // A list that allows listeners to track changes when they occur.
         ObservableList<TodoItem> sourceList = TodoData.getInstance().getTodoItemsList();
 
-        // Sort the unsorted data list.
+        // Create a filtered List to choose items to be displayed.
+        // Filtered List Constructor
+        // The predicate test method will define the criteria to filter the items.
+        filteredList = new FilteredList<>(sourceList, new Predicate<TodoItem>() {
+            @Override
+            public boolean test(TodoItem todoItem) {
+                //display all items for initialization.
+                return true;
+            }
+        });
+
+
+        // Sort the filtered list.
         // From JavaFX.Collections, SortedList class. There is no SortedList in Java.
-        SortedList<TodoItem> sortedList = new SortedList<>(sourceList, new Comparator<TodoItem>() {
+        SortedList<TodoItem> sortedList = new SortedList<>(filteredList, new Comparator<TodoItem>() {
             @Override
             public int compare(TodoItem o1, TodoItem o2) {
                 return o1.getDeadline().compareTo(o2.getDeadline());
@@ -54,6 +74,7 @@ public class Controller {
 
         // Add the data to the listView Control
         mTodoListView.setItems(sortedList);
+
 
         /*
          * Add cellFactory to the ListView to be able to change the colors of the due date.
@@ -259,8 +280,41 @@ public class Controller {
         }
     }
 
+    /*
+     * Method to handle the Filter ToggleButton onAction
+     * Simple filter for Today's date items and button color change.
+     * */
+    public void handleFilterToggle() {
+        if (filterToggleButton.isSelected()) {
+            filteredList.setPredicate(new Predicate<TodoItem>() {
+                @Override
+                public boolean test(TodoItem todoItem) {
+                    filterToggleButton.setStyle("-fx-background-color: steelblue;");
+                    //display todoItems with due date same as today.
+                    return todoItem.getDeadline().equals(LocalDate.now());
+                }
+            });
+
+        } else {
+            //want to set the filteredList predicate to true to display all items.
+            filteredList.setPredicate(new Predicate<TodoItem>() {
+                @Override
+                public boolean test(TodoItem todoItem) {
+                    filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
+                    return true;
+                }
+            });
+
+        }
+    }
+
+    /*
+     * Method to exit the application using the File-Exit pull down menu from the Toolbar.
+     * */
     public void showExitDialog(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exiting Application");
+        alert.setHeaderText("Are you sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Platform.exit(); //Will call the app Stop method.
