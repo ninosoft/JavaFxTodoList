@@ -2,6 +2,7 @@ package com.ninosoft.example.todolist;
 
 import com.ninosoft.example.todolist.datamodel.TodoData;
 import com.ninosoft.example.todolist.datamodel.TodoItem;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -38,7 +39,7 @@ public class Controller {
 
 
     public void initialize() {
-        //Get the unsorted data array and saved in an ObservableList (JavaFX)
+        //Get the unsorted data array and saved in an  object implementing the ObservableList interface (JavaFX)
         //A list that allows listeners to track changes when they occur.
         ObservableList<TodoItem> sourceList = TodoData.getInstance().getTodoItemsList();
 
@@ -186,11 +187,10 @@ public class Controller {
     @FXML
     public void handleKeyPressed(KeyEvent keyEvent) {
         TodoItem item = mTodoListView.getSelectionModel().getSelectedItem();
-        if (keyEvent.getCode() == KeyCode.DELETE ){
+        if (keyEvent.getCode() == KeyCode.DELETE) {
             deleteItem(item);
         }
     }
-
 
 
     /*
@@ -259,5 +259,14 @@ public class Controller {
         }
     }
 
+    public void showExitDialog(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Platform.exit(); //Will call the app Stop method.
+        } else {
+            System.out.println("\"Cancel\" was pressed");
+        }
+    }
 }
 

@@ -28,7 +28,7 @@ public class Main extends Application {
 
     //Read the data during initialization.
     @Override
-    public void init()  {
+    public void init() {
         try {
             TodoData.getInstance().loadItems();
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class Main extends Application {
 
     //Store (write) the data every time we close the application
     @Override
-    public void stop()  {
+    public void stop() {
         try {
             TodoData.getInstance().storeTodoItems(); //calling the singleton class method.
         } catch (IOException e) {

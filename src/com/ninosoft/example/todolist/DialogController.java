@@ -18,10 +18,10 @@ public class DialogController {
     @FXML
     public DatePicker deadLinePicker;
 
-     /*public*/ TodoItem processResults() {
+    /*public*/ TodoItem processResults() {
         String description = descriptionField.getText().trim();
         String details = detailsAreaField.getText().trim();
-        if(deadLinePicker.getValue() != null) {
+        if (deadLinePicker.getValue() != null) {
             LocalDate deadLineValue = deadLinePicker.getValue();
             //System.out.println(description + "  " + details + deadLineValue);
 

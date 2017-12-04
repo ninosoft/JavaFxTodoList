@@ -3,21 +3,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <DialogPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.ninosoft.example.todolist.DialogController" >
-<headerText>
-    Enter a new item description and details including the due date.
-</headerText>
+            fx:controller="com.ninosoft.example.todolist.DialogController">
+    <headerText>
+        Enter a new item description and details including the due date.
+    </headerText>
 
-   <content>
-      <GridPane hgap="10.0" vgap="10.0">
-            <Label text="Short Description" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-            <TextField fx:id="descriptionField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-            <Label text="Details" GridPane.rowIndex="1"  GridPane.columnIndex="0" />
+    <content>
+        <GridPane hgap="10.0" vgap="10.0">
+            <Label text="Short Description" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="descriptionField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Details" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
             <TextArea fx:id="detailsAreaField" GridPane.rowIndex="1" GridPane.columnIndex="1" wrapText="true"/>
-            <Label  text="Deadline" GridPane.rowIndex="2" GridPane.columnIndex="0"  />
-            <DatePicker  fx:id="deadLinePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Deadline" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <DatePicker fx:id="deadLinePicker" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-      </GridPane>
-   </content>
+        </GridPane>
+    </content>
 
 </DialogPane>

@@ -46,7 +46,7 @@ public class TodoData {
     }
 */
 
-/* Method to read todoItems data. */
+    /* Method to read todoItems data. */
     public void loadItems() throws IOException {
         //Creates a new empty observable list that is backed by an arrayList.
         todoItemsList = FXCollections.observableArrayList();
@@ -73,23 +73,23 @@ public class TodoData {
         }
     }
 
-/* Method to write todoItems data */
+    /* Method to write todoItems data */
     public void storeTodoItems() throws IOException {
         Path path = Paths.get(filename);
         BufferedWriter bw = Files.newBufferedWriter(path);
-        try{
+        try {
             Iterator<TodoItem> iter = todoItemsList.iterator();
-            while (iter.hasNext()){
+            while (iter.hasNext()) {
                 TodoItem item = iter.next();
                 bw.write(String.format("%s\t%s\t%s",
                         item.getShortDescription(),
                         item.getDetails(),
                         //save the date as a String
-                        item.getDeadline().format(formatter) ));
+                        item.getDeadline().format(formatter)));
                 bw.newLine();
             }
-        } finally{
-            if(bw !=null) {
+        } finally {
+            if (bw != null) {
                 bw.close();  //if the bufferedWriter is not close the file content is not write.
             }
         }
