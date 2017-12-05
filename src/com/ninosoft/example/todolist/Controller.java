@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.effect.Effect;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -41,10 +40,21 @@ public class Controller {
     private ContextMenu listContextMenu; //for right click menu
     @FXML
     private ToggleButton filterToggleButton;
+
+    SortedList<TodoItem> sortedList;
+
+    // To store the filtered list as per the defined Predicate method.
     private FilteredList<TodoItem> filteredList;
+
+    // To define the filtering criteria
+    // A java predicate is a function that takes in a value or object and the predicate will evaluate
+    // if it meets the condition returning true or false.
+    private Predicate<TodoItem> filterAllItems;
+    private Predicate<TodoItem> filterTodaysItems;
 
 
     public void initialize() {
+        //set the color for the un-toggle button.
         filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
 
         // Get the unsorted data array and saved in an  object implementing the ObservableList interface (JavaFX)
@@ -54,18 +64,31 @@ public class Controller {
         // Create a filtered List to choose items to be displayed.
         // Filtered List Constructor
         // The predicate test method will define the criteria to filter the items.
-        filteredList = new FilteredList<>(sourceList, new Predicate<TodoItem>() {
+
+        filterAllItems = new Predicate<TodoItem>() {
             @Override
             public boolean test(TodoItem todoItem) {
-                //display all items for initialization.
+                //display all items for initial scene/display.
                 return true;
             }
-        });
+        };
+
+        filterTodaysItems = new Predicate<TodoItem>() {
+            @Override
+            public boolean test(TodoItem todoItem) {
+                //display todoItems with due date same as today.
+                return todoItem.getDeadline().equals(LocalDate.now());
+            }
+        };
+
+
+        //set filtered list.
+        filteredList = new FilteredList<>(sourceList, filterAllItems);
 
 
         // Sort the filtered list.
         // From JavaFX.Collections, SortedList class. There is no SortedList in Java.
-        SortedList<TodoItem> sortedList = new SortedList<>(filteredList, new Comparator<TodoItem>() {
+        sortedList = new SortedList<>(filteredList, new Comparator<TodoItem>() {
             @Override
             public int compare(TodoItem o1, TodoItem o2) {
                 return o1.getDeadline().compareTo(o2.getDeadline());
@@ -183,6 +206,7 @@ public class Controller {
 
     } //end of javaFX Initialize method.
 
+
     /*
      * Method to delete an item using an alert dialog, Confirmation type.
      * Uses "Optional": A container object which may or may not contain a non-null value.
@@ -190,14 +214,20 @@ public class Controller {
      * ButtonType to specify which buttons are used in the dialogs.
      * */
     private void deleteItem(TodoItem item) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Item");
-        alert.setHeaderText("Deleting item:  " + item.getShortDescription());
-        alert.setContentText("\"Ok\" to confirm, \"Cancel\" to go back");
-        //Shows the dialog and waits for the user response
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            TodoData.getInstance().deleteItem(item);
+        if (item != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Item");
+            alert.setHeaderText("Deleting item:  " + item.getShortDescription());
+            alert.setContentText("\"Ok\" to confirm, \"Cancel\" to go back");
+            //Shows the dialog and waits for the user response
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                TodoData.getInstance().deleteItem(item);
+                if (sortedList.isEmpty()) {
+                    mDetailTextArea.setText("");
+                    mDueDateLabel.setText("");
+                }
+            }
         }
     }
 
@@ -280,38 +310,40 @@ public class Controller {
         }
     }
 
+
     /*
      * Method to handle the Filter ToggleButton onAction
-     * Simple filter for Today's date items and button color change.
+     * Filter for Today's date items and button color change.
+     * Will maintain the selected item selected if it is in the filtered list.
      * */
     public void handleFilterToggle() {
+        TodoItem selectedItem = mTodoListView.getSelectionModel().getSelectedItem();
         if (filterToggleButton.isSelected()) {
-            filteredList.setPredicate(new Predicate<TodoItem>() {
-                @Override
-                public boolean test(TodoItem todoItem) {
-                    filterToggleButton.setStyle("-fx-background-color: steelblue;");
-                    //display todoItems with due date same as today.
-                    return todoItem.getDeadline().equals(LocalDate.now());
+            filterToggleButton.setStyle("-fx-background-color: steelblue;"); //change color
+            filteredList.setPredicate(filterTodaysItems); //set the filter
+            if (filteredList.isEmpty()) {
+                mDetailTextArea.setText("");
+                mDueDateLabel.setText("");
+            } else {
+                if (filteredList.contains(selectedItem)) {
+                    mTodoListView.getSelectionModel().select(selectedItem);
+                } else {
+                    mTodoListView.getSelectionModel().selectFirst();
                 }
-            });
+            }
 
         } else {
-            //want to set the filteredList predicate to true to display all items.
-            filteredList.setPredicate(new Predicate<TodoItem>() {
-                @Override
-                public boolean test(TodoItem todoItem) {
-                    filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
-                    return true;
-                }
-            });
-
+            // display all items.
+            filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
+            filteredList.setPredicate(filterAllItems);
+            mTodoListView.getSelectionModel().select(selectedItem);
         }
     }
 
     /*
      * Method to exit the application using the File-Exit pull down menu from the Toolbar.
      * */
-    public void showExitDialog(ActionEvent actionEvent) {
+    public void handleExit(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exiting Application");
         alert.setHeaderText("Are you sure you want to exit?");
