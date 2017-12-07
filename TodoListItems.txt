@@ -7,3 +7,4 @@ Test the sorted list.	Enter a due date prior to November 30th.	08-11-2017
 2nd Test sorted list	Enter date prior to december 7, Caribbean Vactaions.	01-12-2017
 New item for testing.	Do something.	06-12-2017
 New item to test the exit menu.	Testing File-Exit pull down menu.	06-12-2017
+Test Rows	Adding extra items	29-12-2017

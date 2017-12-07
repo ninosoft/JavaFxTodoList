@@ -16,8 +16,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("main_window.fxml"));
+        //change default style sheet
+        setUserAgentStylesheet(STYLESHEET_CASPIAN);
         primaryStage.setTitle("Todo List");
-        primaryStage.setScene(new Scene(root, 1280, 720));
+        //remove window decoration, eliminates title toolbar
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setScene(new Scene(root, 720, 340));
         primaryStage.show();
     }
 
@@ -35,6 +39,7 @@ public class Main extends Application {
             System.out.println(e.getMessage());
         }
     }
+
 
     //Store (write) the data every time we close the application
     @Override

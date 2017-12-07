@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -25,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Predicate;
+
 
 public class Controller {
 
@@ -54,6 +56,7 @@ public class Controller {
 
 
     public void initialize() {
+
         //set the color for the un-toggle button.
         filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
 
@@ -166,6 +169,12 @@ public class Controller {
                     //mDueDateLabel.setText(item.getDeadline().toString());
                     //Can use any format here because the data was converted into a date object
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("E, MMM dd, yyyy");
+
+                   /* Bloom bloom = new Bloom();
+                    bloom.setThreshold(0.1);
+                    mDueDateLabel.setTextFill(Color.STEELBLUE);
+                    mDueDateLabel.setFont(Font.font(null, FontWeight.BOLD, 18));
+                    mDueDateLabel.setEffect(bloom);*/
                     mDueDateLabel.setText(df.format(item.getDeadline()));
                 }
             }
@@ -248,7 +257,7 @@ public class Controller {
      * Method to show the "add new item" dialog.
      */
     @FXML
-    public void showAddNewItemDialog() {
+    public void handleAddNewItemMenu() {
         //Dialog class for a Dialog Pane.
         // ButtonType class. specifies which buttons should be shown to users in the dialogs
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -320,6 +329,7 @@ public class Controller {
         TodoItem selectedItem = mTodoListView.getSelectionModel().getSelectedItem();
         if (filterToggleButton.isSelected()) {
             filterToggleButton.setStyle("-fx-background-color: steelblue;"); //change color
+            filterToggleButton.setEffect(new DropShadow());
             filteredList.setPredicate(filterTodaysItems); //set the filter
             if (filteredList.isEmpty()) {
                 mDetailTextArea.setText("");
@@ -335,6 +345,7 @@ public class Controller {
         } else {
             // display all items.
             filterToggleButton.setStyle("-fx-background-color: lightsteelblue;");
+            filterToggleButton.setEffect(null);
             filteredList.setPredicate(filterAllItems);
             mTodoListView.getSelectionModel().select(selectedItem);
         }
@@ -343,7 +354,7 @@ public class Controller {
     /*
      * Method to exit the application using the File-Exit pull down menu from the Toolbar.
      * */
-    public void handleExit(ActionEvent actionEvent) {
+    public void handleExit() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exiting Application");
         alert.setHeaderText("Are you sure you want to exit?");

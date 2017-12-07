@@ -38,7 +38,7 @@ public class TodoItem {
     }*/
 
 
-/* not needed because we are using the cell factory
+/* not needed, using the cell factory
     @Override
     public String toString() {
         return shortDescription ;

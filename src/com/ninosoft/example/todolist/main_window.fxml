@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.ninosoft.example.todolist.Controller">
     <top>
         <VBox>
             <MenuBar>
                 <Menu text="File">
-                    <MenuItem text="Add New Item..." onAction="#showAddNewItemDialog"/>
+                    <MenuItem onAction="#handleAddNewItemMenu" text="Add New Item..."/>
                     <SeparatorMenuItem/>
-                    <MenuItem text="Exit" onAction="#handleExit"/>
+                    <MenuItem onAction="#handleExit" text="Exit"/>
                 </Menu>
             </MenuBar>
 
-            <ToolBar>
+            <ToolBar style="-fx-background-color: darkgray;">
                 <HBox spacing="10">
-                    <Button onAction="#showAddNewItemDialog">
+                    <Button onAction="#handleAddNewItemMenu">
                         <tooltip>
                             <Tooltip text="Add New Item"/>
                         </tooltip>
@@ -32,7 +45,7 @@
                             </ImageView>
                         </graphic>
                     </Button>
-                    <ToggleButton fx:id="filterToggleButton" text="Today's Items" onAction="#handleFilterToggle">
+                    <ToggleButton fx:id="filterToggleButton" onAction="#handleFilterToggle" text="Today's Items">
                         <tooltip>
                             <Tooltip text="Button Down: Show today's items only."/>
                         </tooltip>
@@ -43,23 +56,25 @@
     </top>
     <left>
         <!--<ListView fx:id="mTodoListView" onMouseClicked="#handleClickListView" BorderPane.alignment="TOP_LEFT" />-->
-        <ListView fx:id="mTodoListView" BorderPane.alignment="TOP_LEFT" onKeyPressed="#handleKeyPressed"/>
+        <ListView fx:id="mTodoListView" onKeyPressed="#handleKeyPressed"
+                  BorderPane.alignment="TOP_LEFT"/>
     </left>
     <center>
         <VBox>
-            <TextArea fx:id="mDetailTextArea" VBox.vgrow="ALWAYS" wrapText="true"/>
+            <TextArea fx:id="mDetailTextArea" wrapText="true"
+                      VBox.vgrow="ALWAYS"/>
             <HBox>
                 <padding>
                     <Insets bottom="10" left="10" top="10"/>
                 </padding>
                 <Label text="Due Date: ">
                     <font>
-                        <Font name="Times New Roman bold" size="20"/>
+                        <Font name="Times New Roman bold" size="16"/>
                     </font>
                 </Label>
                 <Label fx:id="mDueDateLabel">
                     <font>
-                        <Font name="Times New Roman bold" size="20"/>
+                        <Font name="Times New Roman bold" size="16" />
                     </font>
                 </Label>
             </HBox>
